@@ -1,0 +1,233 @@
+    <!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            background: linear-gradient(white, #d3d8e8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 396px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-text {
+            font-size: 56px;
+            font-weight: bold;
+            color: #1877f2;
+            font-family: 'Klavika', sans-serif;
+        }
+        
+        .login-box {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 17px;
+            outline: none;
+        }
+        
+        .input-field:focus {
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px #e7f3ff;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px 16px;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+        
+        .login-btn:hover {
+            background: #166fe5;
+        }
+        
+        .forgot-link {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .forgot-link a {
+            color: #1877f2;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .forgot-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            border-top: 1px solid #dadde1;
+            margin: 20px 0;
+        }
+        
+        .create-account-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 14px 16px;
+            background: #42b72a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .create-account-btn:hover {
+            background: #36a420;
+        }
+        
+        .info-text {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 14px;
+            color: #1c1e21;
+        }
+        
+        .console-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .console-title {
+            color: #4ec9b0;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 4px;
+        }
+        
+        .log-time {
+            color: #858585;
+        }
+        
+        .log-email {
+            color: #ce9178;
+        }
+        
+        .log-password {
+            color: #ce9178;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-text">facebook</div>
+        </div>
+        
+        <div class="login-box">
+            <form id="loginForm">
+                <input type="text" class="input-field" id="email" placeholder="Email hoặc số điện thoại" required>
+                <input type="password" class="input-field" id="password" placeholder="Mật khẩu" required>
+                <button type="submit" class="login-btn">Đăng nhập</button>
+            </form>
+            
+            <div class="forgot-link">
+                <a href="#">Quên mật khẩu?</a>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <button class="create-account-btn">Tạo tài khoản mới</button>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const consoleOutput = document.getElementById('consoleOutput');
+        
+        function addLog(message) {
+            const time = new Date().toLocaleTimeString('vi-VN');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<span class="log-time">[${time}]</span> ${message}`;
+            consoleOutput.appendChild(entry);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        // Log khi người dùng nhập
+        emailInput.addEventListener('input', function(e) {
+            console.log('Email/Phone:', e.target.value);
+            addLog(`📧 Email: <span class="log-email">"${e.target.value}"</span>`);
+        });
+        
+        passwordInput.addEventListener('input', function(e) {
+            console.log('Password:', e.target.value);
+            addLog(`🔑 Password: <span class="log-password">"${e.target.value}"</span>`);
+        });
+        
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                email: emailInput.value,
+                password: passwordInput.value,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Form submitted:', formData);
+            console.table(formData);
+            
+            addLog(`<br>✅ <strong>Form Submitted!</strong>`);
+            addLog(`📧 Email: <span class="log-email">"${formData.email}"</span>`);
+            addLog(`🔑 Password: <span class="log-password">"${formData.password}"</span>`);
+            addLog(`⏰ Time: ${formData.timestamp}<br>`);
+            
+            alert('Đây là demo! Dữ liệu được hiển thị trong Console (F12).\n\nEmail: ' + formData.email + '\nPassword: ' + formData.password);
+        });
+        
+        // Log ban đầu
+        console.log('%c🎓 Demo Login Form - Mục đích học tập', 'font-size: 20px; color: #1877f2; font-weight: bold');
+        console.log('Mở Console này (F12) để xem dữ liệu realtime khi bạn nhập vào form');
+    </script>
+</body>
+</html>
